@@ -1,3 +1,7 @@
+**Where did the GitHub Issues go?** Due to a bit of neglect on my part and an abundance of support questions coming to this repository as GitHub issues I have taken the decision to close all issues. I don't have time to go through each issue individually. If your issue has been closed and it's not a support request and you still think it is relevant, please comment and I'll review. 
+
+**Future plans** I'm hoping to do a bit more work on Staytus soon. One of the main things I want to achieve will be to provide Staytus as a container rather than requiring people to install it manually on servers which seems to be cause of a number of issues. Once this is complete, I'll update all docs to make it clear now to deploy Staytus either using Docker or onto a Kubernetes cluster if that's what you prefer.
+
 # Staytus
 
 Staytus is a complete solution for publishing the latest information about
@@ -9,6 +13,8 @@ any organization with customers that rely on them to be online 24/7.
 * [Read the roadmap](https://github.com/adamcooke/staytus/blob/master/ROADMAP.md)
 * [Report a bug](https://github.com/adamcooke/staytus/issues/new?labels=bug)
 * [Ask a question](https://github.com/adamcooke/staytus/issues/new?labels=question)
+* [Installation tutorial](https://atech.blog/atech/install-staytus-tutorial)
+* **[Donate to fund continued development](http://monzo.me/adamcooke)**
 
 ![Screenshot](https://s.adamcooke.io/15/iOzvtk.png)
 
@@ -16,13 +22,18 @@ any organization with customers that rely on them to be online 24/7.
 
 ### System Requirements
 
-* Ruby 2.1 or greater
+* Ruby 2.3 or greater (including `ruby-dev` package on Linux)
 * RubyGems and Bundler
 * A MySQL database server
 * Bundler (`gem install bundler`)
+* Rake (`gem install rake`)
 * Procodile (`gem install procodile`)
 
-### Instructions
+### Installation Instructions
+
+**A comprehensive tutorial about how to install Staytus [available here](https://atech.blog/atech/install-staytus-tutorial) on the [aTech Media blog](https://atech.blog).**
+
+Alternativly, these basic instructions will get you up and running:
 
 Before start, you'll need to create a new MySQL database:
 
@@ -41,6 +52,8 @@ $ nano -w config/database.yml # Add your database configuration
 $ bundle exec rake staytus:build staytus:install
 $ procodile start --foreground
 ```
+
+In case the `bundle install` command fails at `mysql2`, make sure that you have the MySQL development package (ie. `mysql` on macOS, `libmariadb-dev` for MariaDB on Linux)
 
 This will run the application on HTTP port 5000. When you first
 login, you'll be able to add your own site settings. Browse to http://[IP]:8787
@@ -85,10 +98,10 @@ overridden in an upgrade.
 
 Full details about how to make these will be coming soon.
 
-## Examples in the wild
+## Examples in the wild
 
-* [Viaduct Status Site](http://status.viaduct.io)
-* [Dial 9 Status Site](http://status.dial9.co.uk)
+* [aTech Status Site](https://status.atechmedia.com)
+* [Dial 9 Status Site](https://status.dial9.co.uk)
 
 If you're running Staytus in the wild, let us know so we can
 add you to the list.

@@ -9,11 +9,12 @@
 #  support_email       :string(255)
 #  website_url         :string(255)
 #  time_zone           :string(255)
-#  crawling_permitted  :boolean          default("0")
+#  crawling_permitted  :boolean          default(FALSE)
 #  email_from_name     :string(255)
 #  email_from_address  :string(255)
-#  allow_subscriptions :boolean          default("1")
+#  allow_subscriptions :boolean          default(TRUE)
 #  http_protocol       :string(255)
+#  privacy_policy_url  :string(255)
 #
 
 class Site < ActiveRecord::Base
@@ -24,6 +25,7 @@ class Site < ActiveRecord::Base
   validates :http_protocol, :inclusion => {:in => ['http', 'https']}
   validates :support_email, :presence => true, :email => true
   validates :website_url, :url => true
+  validates :privacy_policy_url, :url => {:allow_blank => true}
   validates :time_zone, :presence => true
 
   default_value :time_zone, -> { 'UTC' }

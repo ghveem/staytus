@@ -14,7 +14,7 @@
 #  updated_at        :datetime         not null
 #  closed_at         :datetime
 #  identifier        :string(255)
-#  notify            :boolean          default("0")
+#  notify            :boolean          default(FALSE)
 #
 
 class Maintenance < ActiveRecord::Base
@@ -111,8 +111,12 @@ class Maintenance < ActiveRecord::Base
     end
   end
 
+  def subscribers
+    @subscribers ||= Subscriber.for_services(service_ids)
+  end
+
   def send_notifications
-    for subscriber in Subscriber.verified
+    for subscriber in subscribers
       Staytus::Email.deliver(subscriber, :new_maintenance, :maintenance => self)
     end
   end

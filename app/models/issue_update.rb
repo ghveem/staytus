@@ -11,17 +11,19 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  identifier        :string(255)
-#  notify            :boolean          default("0")
+#  notify            :boolean          default(FALSE)
 #
 
 class IssueUpdate < ActiveRecord::Base
 
-  validates :state, :inclusion => {:in => Issue::STATES, :allow_blank => true}
+  validates :state, :inclusion => {:in => Issue::STATES}
   validates :text, :presence => true
 
   belongs_to :issue, :touch => true
   belongs_to :user
   belongs_to :service_status
+
+  delegate :subscribers, to: :issue
 
   random_string :identifier, :type => :hex, :length => 6, :unique => true
 
@@ -52,7 +54,7 @@ class IssueUpdate < ActiveRecord::Base
   end
 
   def send_notifications
-    for subscriber in Subscriber.verified
+    for subscriber in subscribers
       Staytus::Email.deliver(subscriber, :new_issue_update, :issue => self.issue, :update => self)
     end
   end

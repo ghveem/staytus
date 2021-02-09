@@ -6,12 +6,12 @@
 #  title             :string(255)
 #  state             :string(255)
 #  service_status_id :integer
-#  all_services      :boolean          default("1")
+#  all_services      :boolean          default(TRUE)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  user_id           :integer
 #  identifier        :string(255)
-#  notify            :boolean          default("0")
+#  notify            :boolean          default(FALSE)
 #
 
 class Issue < ActiveRecord::Base
@@ -80,8 +80,12 @@ class Issue < ActiveRecord::Base
     end
   end
 
+  def subscribers
+    @subscribers ||= Subscriber.for_services(service_ids)
+  end
+
   def send_notifications
-    for subscriber in Subscriber.verified
+    for subscriber in subscribers
       Staytus::Email.deliver(subscriber, :new_issue, :issue => self, :update => self.updates.order(:id).first)
     end
   end
